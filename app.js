@@ -1,50 +1,70 @@
 var jsdom = require("jsdom");
+var fs     = require('fs');
+var http = require('http');
+
+var jqueryString = fs.readFileSync("./vendor/jquery.js").toString();
 var underscore = require("./vendor/underscore.js");
 
-var scrape = function(scraper) {
+var supersport = require('./supersport.js');
+
+var arguments = process.argv.splice(2);
+
+var scrape = function(scraper, callback) {
     var results = [],
         page;
     underscore.each (scraper.pages, function(page) {
         jsdom.env({
             html: page.url,
-            scripts: [
-                './vendor/jquery.js',
-                './vendor/underscore.js'
+            src: [
+                jqueryString
             ],
             done: function(errors, w) {
-                results.concat( scraper.parser(errors, w, page.url, page.tags ) );
+                try{
+                    callback(results.concat( scraper.parser(errors, w, page.url, page.tags ) ));
+                }catch(err){
+                    console.log(err.message);
+                    console.log(err.stack);
+                    
+                } 
             }
         });
     });
-    console.log(results.length);
-    return results;
 };
 
-var supersport = {
-    common_tags: ["sport", "official" ],
-    pages: [{url: "http://www.supersport.com/cricket/sa-team/fixtures?print=true", tags: ["cricket", "proteas"]},
-            {url: "http://www.supersport.com/rugby/springboks/fixtures?print=true", tags: ["rugby", "springboks"]},
-            {url: "http://www.supersport.com/rugby/super-rugby/fixtures?print=true", tags: ["rugby", "super 15", "super rugby"]},
-            {url: "http://www.supersport.com/rugby/vodacom-cup/fixtures?print=true", tags: ["rugby", "vodacom cup"]},
-            {url: "http://www.supersport.com/rugby/six-nations/fixtures?print=true", tags: ["rugby", "six nations"]} ],
-    parser: function(e, w, url, pageTags) {
-        var $ = w.$,
-            results = [],
-            that = this;
-        
-        $('table.fixturestable').each(function(index) {
-            var dateText = $(this).find('tr:first-child > td').text();      
-            $(this).find('tr').slice(1).each(function(i) { 
-                var name = $(this).find('td:nth-child(2)').text() + " v " + $(this).find('td:nth-child(4)').text() + ' at ' + $(this).find('td:nth-child(6)').text(),
-                    fullDate = $(this).find('td:first-child').text() + ' ' + dateText + ' ' +  $(this).find('td:nth-child(7)').text(),
-                    tags = [$(this).find('td:nth-child(5)')].concat(pageTags, that.common_tags);
-                  
-                var result = {name:  name , eventDate: new Date(fullDate), tags: tags, url: url };
-                console.log(JSON.stringify(result));
-                results.push(result);
-            });
-        }); 
-    }
+var push = function(countdowns){
+    var data = JSON.stringify( {countdowns: countdowns} ),
+        host = arguments[0] === undefined? "localhost" : arguments[0],
+        port = arguments[1] === undefined? 8080 : parseInt(arguments[1], 10),
+        options = {
+            host: host,
+            port: port,
+            path: '/upsertmulti',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(data,'utf8')
+            }
+        };
+
+    var request = http.request(options, function(res){
+        console.log(res.statusCode);
+
+        console.log("body: ");
+        res.on('data', function(chunk) {
+            //console.log(chunk);
+        });
+    });
+    
+
+    request.on('error', function(err) {
+            console.log("Error pushing results");
+            console.log(err.message);
+    });
+    request.write( data );
+    request.end();
 };
 
-scrape(supersport);
+//scrape and push
+underscore.each( [supersport.soccer, supersport.cricket, supersport.rugby], function (scraper) {
+    var res = scrape(scraper, push); 
+});
