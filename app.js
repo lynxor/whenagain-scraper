@@ -6,7 +6,7 @@ var underscore = require("./vendor/underscore.js");
 var supersport = require('./supersport.js');
 var btgames = require('./btgames.js');
 
-var jsdom_scrape = require('./jsdom_scraper.js').jsdom_scrape;
+//var jsdom_scrape = require('./jsdom_scraper.js').jsdom_scrape;
 
 var zombie_scrape = require('./zombie_scraper.js').zombie_scrape;
 
@@ -66,10 +66,10 @@ var zombie_scrapers = [
 ];
 
 underscore.each(zombie_scrapers, function( scraper ){
-  //  zombie_scrape(scraper, printCountdowns);
+    zombie_scrape(scraper, printCountdowns);
 });
 
 underscore.each(scrapers, function (scraper) {
   //scrape(scrapers, push);
-  jsdom_scrape(scraper, printCountdowns);
+  //jsdom_scrape(scraper, printCountdowns);
 });

@@ -3,16 +3,16 @@ var underscore = require("./vendor/underscore.js");
 var btgames = {
     common_tags: ["games"],
     pages: [
-        {url : "http://www.btgames.co.za/bt/release.asp", tags: ["pc"]}
+       {url : "http://www.btgames.co.za/bt/release.asp", tags: ["pc"]}     
     ],
     parser: function(pageTags, callback){
         return function(error, browser){
-            
-            underscore.each( underscore.range(2), function(val){
-                browser.select("p", val.toString(), function(browser){
-                    
-                    console.log(browser.html());
-                });
+            console.log(browser.html());
+            underscore.each( [3], function(val){
+                browser.select("#p", val.toString());             
+                browser.evaluate("getformat()");
+               
+                console.log("After eval");
                 
                 
             });
