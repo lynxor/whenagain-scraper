@@ -1,35 +1,18 @@
-var jsdom = require("jsdom");
 var fs     = require('fs');
 var http = require('http');
-
 var jqueryString = fs.readFileSync("./vendor/jquery.js").toString();
 var underscore = require("./vendor/underscore.js");
 
 var supersport = require('./supersport.js');
+var btgames = require('./btgames.js');
+
+var jsdom_scrape = require('./jsdom_scraper.js').jsdom_scrape;
+
+var zombie_scrape = require('./zombie_scraper.js').zombie_scrape;
 
 var arguments = process.argv.splice(2);
 
-var scrape = function(scraper, callback) {
-    var results = [],
-        page;
-    underscore.each (scraper.pages, function(page) {
-        jsdom.env({
-            html: page.url,
-            src: [
-                jqueryString
-            ],
-            done: function(errors, w) {
-                try{
-                    callback(results.concat( scraper.parser(errors, w, page.url, page.tags ) ));
-                }catch(err){
-                    console.log(err.message);
-                    console.log(err.stack);
-                    
-                } 
-            }
-        });
-    });
-};
+
 
 var push = function(countdowns){
     var data = JSON.stringify( {countdowns: countdowns} ),
@@ -64,7 +47,29 @@ var push = function(countdowns){
     request.end();
 };
 
-//scrape and push
-underscore.each( [supersport.soccer, supersport.cricket, supersport.rugby], function (scraper) {
-    var res = scrape(scraper, push); 
+//alternative to push for testing
+var printCountdowns =  function(countdowns){
+    underscore.each(countdowns, function(c){
+        c.eventDate = new Date(c.eventDate);
+        console.log(JSON.stringify(c));
+    });
+};
+
+var scrapers = [
+supersport.soccer
+//supersport.cricket,
+//supersport.rugby
+];
+
+var zombie_scrapers = [
+    btgames.btgames
+];
+
+underscore.each(zombie_scrapers, function( scraper ){
+  //  zombie_scrape(scraper, printCountdowns);
+});
+
+underscore.each(scrapers, function (scraper) {
+  //scrape(scrapers, push);
+  jsdom_scrape(scraper, printCountdowns);
 });
