@@ -26,20 +26,34 @@ var btgames = {
 
             _.each(that.platforms, function(platform){
                 queue.push(function() {
-                    console.log("Executing " + platform);
+                    pause();
+                    console.log("Executing " + platform.name);
                     browser.select("#p", platform.value); 
                     browser.evaluate("document.getElementById('selection').submit()");  //do the submit cause zombie is too lame to pick up onchange
                     browser.wait(contentLoaded, function(){
-                        console.log( browser.html() );
+                        var table = browser.querySelector('form > table');
+                        console.log(table);
+                        resume();
                     });
                 });
             });
-
-            var runPlatforms = function(){
-                
-            };
-            
            
+            function pause(){
+                paused = true;
+            };
+
+            function resume(){
+                paused = false;
+                setTimeout(parsePlatform, 200);
+            };
+
+            function parsePlatform(){
+                if(!paused && queue.length){
+                    queue.shift()();
+                }
+            };
+
+            parsePlatform();
              
         };
     }
