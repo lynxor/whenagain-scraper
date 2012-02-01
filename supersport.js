@@ -58,17 +58,17 @@ var rugby = {
 var soccer =  {
     common_tags: ["soccer", "football", "sport", "official" ],
     pages: [
-        // {url: './examples/supersport_soccer.html', tags: ["test"] }
-        {url: "http://www.supersport.com/football/national-first-division/fixtures?print=true", tags: ["nationalfirstdivision", "firstdivision"]},
-        {url: "http://www.supersport.com/football/absa-premiership/fixtures?print=true", tags: ["absapremiership", "premiership"]},
-        {url: "http://www.supersport.com/football/europa-league/fixtures?print=true", tags: ["UEFA", "Europa", "europaleague"]},
-        {url: "http://www.supersport.com/football/uefa-champions-league/fixtures?print=true", tags: ["UEFA", "eufachampionsleague"]},
-        {url: "http://www.supersport.com/football/spain/fixtures?print=true", tags: ["spain", "primeraliga"]},
-        {url: "http://www.supersport.com/football/england/fixtures?print=true", tags: ["england", "premierleague" ]},
-        {url: "http://www.supersport.com/football/fa-cup/fixtures?print=true", tags: ["england", "FACup" ]},
-        {url: "http://www.supersport.com/football/germany/fixtures?print=true", tags: ["bundesliga", "German"]},
-        {url: "http://www.supersport.com/football/france/fixtures?print=true", tags: ["ligue1", "french"]},
-        {url: "http://www.supersport.com/football/portugal/fixtures?print=true", tags: ["portuegueseliga", "liga"]}
+         {url: './examples/supersport_soccer.html', tags: ["test"] }
+        // {url: "http://www.supersport.com/football/national-first-division/fixtures?print=true", tags: ["nationalfirstdivision", "firstdivision"]},
+        // {url: "http://www.supersport.com/football/absa-premiership/fixtures?print=true", tags: ["absapremiership", "premiership"]},
+        // {url: "http://www.supersport.com/football/europa-league/fixtures?print=true", tags: ["UEFA", "Europa", "europaleague"]},
+        // {url: "http://www.supersport.com/football/uefa-champions-league/fixtures?print=true", tags: ["UEFA", "eufachampionsleague"]},
+        // {url: "http://www.supersport.com/football/spain/fixtures?print=true", tags: ["spain", "primeraliga"]},
+        // {url: "http://www.supersport.com/football/england/fixtures?print=true", tags: ["england", "premierleague" ]},
+        // {url: "http://www.supersport.com/football/fa-cup/fixtures?print=true", tags: ["england", "FACup" ]},
+        // {url: "http://www.supersport.com/football/germany/fixtures?print=true", tags: ["bundesliga", "German"]},
+        // {url: "http://www.supersport.com/football/france/fixtures?print=true", tags: ["ligue1", "french"]},
+        // {url: "http://www.supersport.com/football/portugal/fixtures?print=true", tags: ["portuegueseliga", "liga"]}
         
     ],
     parser: function(e, w, url, pageTags) {

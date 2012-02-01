@@ -3,13 +3,14 @@ var fs     = require('fs');
 var http = require('http');
 
 var jqueryString = fs.readFileSync("./vendor/jquery.js").toString();
-var underscore = require("./vendor/underscore.js");
-
+var _ = require("./vendor/underscore.js");
+var handler = require('./result_handler.js');
+var supersport = require('./supersport.js');
 
 var jsdom_scrape = function(scraper, callback) {
     var results = [],
         page;
-    underscore.each (scraper.pages, function(page) {
+    _.each (scraper.pages, function(page) {
         jsdom.env({
             html: page.url,
             src: [
@@ -28,4 +29,12 @@ var jsdom_scrape = function(scraper, callback) {
     });
 };
 
-exports.jsdom_scrape = jsdom_scrape;
+var scrapers = [
+    supersport.soccer
+  //  supersport.cricket,
+  //  supersport.rugby
+];
+
+_.each(scrapers, function (scraper) {
+        jsdom_scrape(scraper, handler.handle);
+});
