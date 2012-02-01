@@ -30,9 +30,9 @@ var jsdom_scrape = function(scraper, callback) {
 };
 
 var scrapers = [
-    supersport.soccer
-  //  supersport.cricket,
-  //  supersport.rugby
+    supersport.soccer,
+    supersport.cricket,
+    supersport.rugby
 ];
 
 _.each(scrapers, function (scraper) {

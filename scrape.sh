@@ -1,2 +1,2 @@
-#node zombie_scraper.js $1 $2
+node zombie_scraper.js $@
 node jsdom_scraper.js $@
