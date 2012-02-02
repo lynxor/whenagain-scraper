@@ -16,7 +16,7 @@ var cricket = {
     pages: [
         {url: "http://www.supersport.com/cricket/sa-team/fixtures?print=true", tags: ["proteas"] },
         {url: "http://www.supersport.com/cricket/supersport-series/fixtures?print=true", tags: ["supersport", "supersportseries", "sss" ] },
-        {url: "http://www.supersport.com/cricket/domestic-t20/fixtures?print=true", tags: ["top20", "domesticcricket" ] }
+        {url: "http://www.supersport.com/cricket/domestic-t20/fixtures?print=true", tags: ["top20", "sadomesticcricket" ] }
     ],
     parser: function(e, w, url, pageTags) { 
         var that = this;
@@ -35,9 +35,9 @@ var cricket = {
 var rugby = {
     common_tags: ["sport", "official" ],
     pages: [
-        {url: "http://www.supersport.com/rugby/springboks/fixtures?print=true", tags: ["rugby", "springboks"]},
+        {url: "http://www.supersport.com/rugby/springboks/fixtures?print=true", tags: ["rugby", "springboks", "sarugby"]},
         {url: "http://www.supersport.com/rugby/super-rugby/fixtures?print=true", tags: ["rugby", "super15", "superrugby"]},
-        {url: "http://www.supersport.com/rugby/vodacom-cup/fixtures?print=true", tags: ["rugby", "vodacomcup"]},
+        {url: "http://www.supersport.com/rugby/vodacom-cup/fixtures?print=true", tags: ["rugby", "vodacomcup", "sarugby"]},
         {url: "http://www.supersport.com/rugby/six-nations/fixtures?print=true", tags: ["rugby", "sixnations"]}
         
     ],

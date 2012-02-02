@@ -7,7 +7,7 @@ var underscore = require("./vendor/underscore.js");
 
 var supersport = require('./supersport.js');
 
-var arguments = process.argv.splice(2);
+var args = process.argv.splice(2);
 
 var scrape = function(scraper, callback) {
     var results = [],
@@ -33,8 +33,8 @@ var scrape = function(scraper, callback) {
 
 var push = function(countdowns){
     var data = JSON.stringify( {countdowns: countdowns} ),
-        host = arguments[0] === undefined? "localhost" : arguments[0],
-        port = arguments[1] === undefined? 8080 : parseInt(arguments[1], 10),
+        host = args[0] === undefined? "localhost" : args[0],
+        port = args[1] === undefined? 8080 : parseInt(args[1], 10),
         options = {
             host: host,
             port: port,
@@ -60,9 +60,12 @@ var push = function(countdowns){
             console.log("Error pushing results");
             console.log(err.message);
     });
+
+    console.log("pushing to: " + host + port);
     request.write( data );
     request.end();
 };
+
 
 //scrape and push
 underscore.each( [supersport.soccer, supersport.cricket, supersport.rugby], function (scraper) {
