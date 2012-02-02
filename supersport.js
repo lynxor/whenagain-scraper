@@ -7,7 +7,7 @@ var parse = function(e, w, parseTr){
             results.push( parseTr( this, dateText ) );
         });
     });
-   // console.log(results.length);
+    // console.log(results.length);
     return results;
 };
 
@@ -56,11 +56,19 @@ var rugby = {
 };
 
 var soccer =  {
-    common_tags: ["sport", "official" ],
+    common_tags: ["soccer", "football", "sport", "official" ],
     pages: [
-       // {url: './examples/supersport_soccer.html', tags: ["test"] }
-        {url: "http://www.supersport.com/football/national-first-division/fixtures?print=true", tags: ["soccer", "football", "nationalfirstdivision", "firstdivision"]},
-        {url: "http://www.supersport.com/football/absa-premiership/fixtures?print=true", tags: ["absapremiership", "premiership"]}
+        // {url: './examples/supersport_soccer.html', tags: ["test"] } //just for testing offline
+        {url: "http://www.supersport.com/football/national-first-division/fixtures?print=true", tags: ["nationalfirstdivision", "firstdivision"]},
+        {url: "http://www.supersport.com/football/absa-premiership/fixtures?print=true", tags: ["absapremiership", "premiership"]},
+        {url: "http://www.supersport.com/football/europa-league/fixtures?print=true", tags: ["UEFA", "Europa", "europaleague"]},
+        {url: "http://www.supersport.com/football/uefa-champions-league/fixtures?print=true", tags: ["UEFA", "eufachampionsleague"]},
+        {url: "http://www.supersport.com/football/spain/fixtures?print=true", tags: ["spain", "primeraliga"]},
+        {url: "http://www.supersport.com/football/england/fixtures?print=true", tags: ["england", "premierleague" ]},
+        {url: "http://www.supersport.com/football/fa-cup/fixtures?print=true", tags: ["england", "FACup" ]},
+        {url: "http://www.supersport.com/football/germany/fixtures?print=true", tags: ["bundesliga", "German"]},
+        {url: "http://www.supersport.com/football/france/fixtures?print=true", tags: ["ligue1", "french"]},
+        {url: "http://www.supersport.com/football/portugal/fixtures?print=true", tags: ["portuegueseliga", "liga"]}
         
     ],
     parser: function(e, w, url, pageTags) {
@@ -77,9 +85,12 @@ var soccer =  {
             else {
                 $(this).find('tr').each(function(trInd) {
                     var name = $(this).find('td:nth-child(1)').text() + " v " + $(this).find('td:nth-child(3)').text() + ' at ' + $(this).find('td:nth-child(4)').text(),
-                    fullDate = dateText + ' ' +  $(this).find('td:nth-child(5)').text(),
-                    tags = pageTags.concat(that.common_tags);
-                    var result = {name:  name , eventDate: Date.parse(fullDate), tags: tags, url: url };
+                        col5 = $(this).find('td:nth-child(5)').text(),
+                        col6 = $(this).find('td:nth-child(6)').text(),
+                        time = col5.match(/\d{2}:\d{2}/) === null? col6 : col5,
+                        fullDate = dateText + ' ' + time ,
+                        tags = pageTags.concat(that.common_tags),
+                        result = {name:  name , eventDate: Date.parse(fullDate), tags: tags, url: url };
                     results.push(result);
                 });
             }
