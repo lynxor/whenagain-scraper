@@ -1,4 +1,4 @@
-var _ = require("./vendor/underscore.js");
+var _ = require("underscore");
 var fs     = require('fs');
 var jqueryString = fs.readFileSync("./vendor/jquery.js").toString();
 
@@ -14,16 +14,16 @@ var btgames = {
         {url : "http://www.btgames.co.za/bt/release.asp", tags: []}     
     ],
     platforms: [
-        {value: '1', name: "PC-CD/DVD"},
+        {value: '1', name: "PC"},
         {value: '3', name: "PS3"},
         {value: '4', name: "3DS"},
         {value: '8', name : "XBOX 360"},
         {value: '10', name: "WII"}
     ],
-    parser: function(pageTags, callback){
+    parser: function(pageTags, currentUrl, callback){
         var that = this;          
         return function(error, browser){
-              var queue = _.map(that.platforms, function(platform){
+            var queue = _.map(that.platforms, function(platform){
                 return function() {
                     console.log("Executing " + platform.name);
                     browser.select("#p", platform.value); 
@@ -34,10 +34,10 @@ var btgames = {
                             results = [],
                             dateText;
                         $('table[rules="rows"] > tr').each(function(trInd) {
-                           
+                            
                             if( $(this).find('td').length === 1) {
-                              dateText = $.trim( $(this).find('td').text() );
-                              dateText = !dateText.match(/\w*(\,)?\s\d{4}/) ? undefined : dateText;
+                                dateText = $.trim( $(this).find('td').text() );
+                                dateText = !dateText.match(/\w*(\,)?\s\d{4}/) ? undefined : dateText;
                             }
                             else if(dateText) {
                                 var name = $(this).find('td:first-child').text() + " - " + platform.name, //might have same name for eg PS3 and PC
@@ -46,8 +46,11 @@ var btgames = {
                                     dayMaybe =  $(this).find('td:nth-child(5)').text(),
                                     dayMatch = dayMaybe.match(/(\d{1,2})\s(\w*)/),
                                     day = dayMatch === null? 1 : dayMatch[1],
-                                    result = {name: name, eventDate: Date.parse(day + " " + dateText), tags: that.common_tags.concat(pageTags, [genre, publisher, platform.name]) };
-                               
+                                    tags = _.chain(that.common_tags.concat(pageTags, [genre, publisher, platform.name]))
+                                        .map( function(tag){ return tag.replace(/\s/g, ''); })  //remove all spaces from tags
+                                        .filter(function (tag) { return tag !== ""; }).value(),                                                   
+                                    result = {name: name, eventDate: Date.parse(day + " " + dateText), tags: tags, url: currentUrl };
+                                
                                 results.push(result);
                             }
                         });

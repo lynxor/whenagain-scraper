@@ -1,5 +1,5 @@
 var Browser = require("zombie");
-var _ = require("./vendor/underscore.js");
+var _ = require("underscore");
 var btgames = require('./btgames.js');
 var handler = require('./result_handler.js');
 
@@ -10,7 +10,7 @@ var zombie_scrape = function(scraper, callback) {
         page;
     _.each (scraper.pages, function(page) {
         try{
-            browser.visit(page.url, scraper.parser(page.tags, callback));
+            browser.visit(page.url, scraper.parser(page.tags, page.url, callback));
         } catch(err){
             console.log(err.stack);
         }

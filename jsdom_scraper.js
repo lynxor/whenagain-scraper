@@ -3,7 +3,7 @@ var fs     = require('fs');
 var http = require('http');
 
 var jqueryString = fs.readFileSync("./vendor/jquery.js").toString();
-var _ = require("./vendor/underscore.js");
+var _ = require("underscore");
 var handler = require('./result_handler.js');
 var supersport = require('./supersport.js');
 

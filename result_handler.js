@@ -1,5 +1,5 @@
 var http = require('http');
-var _ = require("./vendor/underscore.js");
+var _ = require("underscore");
 var args = process.argv.splice(2);
 
 var pushHandler = function(countdowns){
