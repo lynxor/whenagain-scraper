@@ -20,7 +20,7 @@ Host and port to push to can be provided as the first and second parameters:
 
 You need Node.js and the following node modules: 
 
-    * jsdom
-    * zombie
+* jsdom
+* zombie
  
 
